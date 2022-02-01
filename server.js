@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 require('dotenv').config()
 const cors = require('cors')
+const favoritesRouter = require('./controllers/favoriteMovies')
 
 // ENV
 const { DATABASE_URL, PORT } = process.env
@@ -21,14 +22,8 @@ db.on('error', (err) => console.log("Mongo disconnected", err))
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(cors())
+app.use('/favorites', favoritesRouter)
 
-const admin = require("firebase-admin");
-
-const serviceAccount = require("./services.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
 
 // listen to port
 app.listen(PORT, () => console.log('Listening for Express'))

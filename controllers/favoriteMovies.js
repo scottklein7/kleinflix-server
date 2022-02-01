@@ -4,8 +4,6 @@ const FavoriteMovie = require('../models/FavoriteMovie.js');
 
 const admin = require('firebase-admin');
 const serviceAccount = require("../services.json");
-// const serviceAccount = JSON.parse(process.env.GOOGLE_CREDS);
-
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
@@ -26,7 +24,7 @@ async function isAuthenticated(req, res, next) {
 }
 
 
-favoritesRouter.delete("/favorites/:id", async (req,res) => {
+favoritesRouter.delete("/:id", async (req, res) => {
     try {
         res.json(await FavoriteMovie.findByIdAndDelete(req.params.id))
     } catch (error) {
@@ -34,9 +32,18 @@ favoritesRouter.delete("/favorites/:id", async (req,res) => {
     }
 });
 
-favoritesRouter.post("/favorites/", isAuthenticated, async (req,res) => {
+favoritesRouter.delete("/tvshows/:id", async (req, res) => {
+    try {
+        res.json(await FavoriteMovie.findByIdAndDelete(req.params.id))
+    } catch (error) {
+        res.status(400).json(error)
+    }
+});
+
+favoritesRouter.post("/", isAuthenticated, async (req, res) => {
     try {
         req.body.uId = req.user.uid;
+        console.log(req.body)
         res.json(await FavoriteMovie.create(req.body));
     } catch (error) {
         res.status(400).json(error)
@@ -44,9 +51,21 @@ favoritesRouter.post("/favorites/", isAuthenticated, async (req,res) => {
 });
 
 
-favoritesRouter.get("/favorites", isAuthenticated, async (req,res) => {
-    try{
-        res.json(await FavoriteMovie.find({uId: req.user.uid}))
+favoritesRouter.get("/", isAuthenticated, async (req, res) => {
+    try {
+        res.json(await FavoriteMovie.find({
+            $and: [{ uId: req.user.uid }, { media: 'movie' }]
+        }))
+    } catch (error) {
+        res.status(400).json(error)
+    }
+});
+
+favoritesRouter.get("/tvshows", isAuthenticated, async (req, res) => {
+    try {
+        res.json(await FavoriteMovie.find({
+            $and: [{ uId: req.user.uid }, { media: 'tv' }]
+        }))
     } catch (error) {
         res.status(400).json(error)
     }
