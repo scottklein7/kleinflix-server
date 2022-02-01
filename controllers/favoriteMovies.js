@@ -1,6 +1,6 @@
 const express = require('express')
 const favoritesRouter = express.Router()
-const FavoriteMovie = require('../models/FavoriteMovie.js');
+const FavoriteMovie = require('../models/favoriteMovie.js');
 
 const admin = require('firebase-admin');
 const serviceAccount = JSON.parse(process.env.GOOGLE_CREDS);
