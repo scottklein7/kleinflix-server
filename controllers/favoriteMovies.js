@@ -3,7 +3,7 @@ const favoritesRouter = express.Router()
 const FavoriteMovie = require('../models/FavoriteMovie.js');
 
 const admin = require('firebase-admin');
-const serviceAccount = require("../services.json");
+const serviceAccount = JSON.parse(process.env.GOOGLE_CREDS);
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
