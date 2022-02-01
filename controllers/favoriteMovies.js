@@ -23,6 +23,10 @@ async function isAuthenticated(req, res, next) {
     }
 }
 
+favoritesRouter.get('/try', (req, res) => {
+    res.send('mesaage')
+})
+
 
 favoritesRouter.delete("/:id", async (req, res) => {
     try {
