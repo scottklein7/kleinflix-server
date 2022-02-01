@@ -7,7 +7,7 @@ const cors = require('cors')
 const favoritesRouter = require('./controllers/favoriteMovies')
 
 // ENV
-const { DATABASE_URL } = process.env
+const { DATABASE_URL, PORT } = process.env
 
 // INIT APP 
 const app = express()
